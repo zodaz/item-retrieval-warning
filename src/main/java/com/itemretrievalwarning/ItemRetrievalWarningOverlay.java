@@ -12,17 +12,15 @@ public class ItemRetrievalWarningOverlay extends Overlay
 {
 
     private Client client;
-    private ItemRetrievalWarningConfig config;
     private ItemRetrievalWarningPlugin plugin;
     private Color color;
     private boolean drawFlash = false;
 
     @Inject
-    public ItemRetrievalWarningOverlay(Client client, ItemRetrievalWarningConfig config, ItemRetrievalWarningPlugin plugin)
+    public ItemRetrievalWarningOverlay(Client client, ItemRetrievalWarningPlugin plugin)
     {
 	this.color = new Color(255,0,0,40);
 	this.client = client;
-	this.config = config;
 	this.plugin = plugin;
 	setPosition(OverlayPosition.DYNAMIC);
 	setMovable(true);
