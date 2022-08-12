@@ -245,22 +245,6 @@ public class ItemRetrievalWarningPlugin extends Plugin
 	}
     }
 
-    private String getItemRetrievalInterfaceName()
-    {
-	Widget widget = client.getWidget(ITEM_RETRIEVAL_GROUP_ID, ITEM_RETRIEVAL_CHILD_NAME);
-	if (widget != null)
-	{
-	    Widget[] widgets = widget.getChildren();
-	    if (widgets != null)
-	    {
-		for (Widget w : widgets)
-		    if(w.getText() != "")
-			return w.getText();
-	    }
-	}
-	return null;
-    }
-
     private int getItemRetrievalItemCount()
     {
 	int items = 0;
