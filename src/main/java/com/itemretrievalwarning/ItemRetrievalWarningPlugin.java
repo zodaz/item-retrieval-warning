@@ -17,6 +17,7 @@ import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetID;
 import net.runelite.api.widgets.WidgetInfo;
+import net.runelite.api.widgets.WidgetType;
 import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
@@ -27,7 +28,7 @@ import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.infobox.InfoBox;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 
-import java.awt.Color;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 
 @Slf4j
@@ -149,7 +150,6 @@ public class ItemRetrievalWarningPlugin extends Plugin
 	}
 	else if(loaded.getGroupId() == WidgetID.KEPT_ON_DEATH_GROUP_ID)
 	{
-	    deathBankStatusKnown = true;
 	    syncKeptItemsInterface = true;
 	}
     }
@@ -218,8 +218,27 @@ public class ItemRetrievalWarningPlugin extends Plugin
     {
 	syncKeptItemsInterface = false;
 	Widget widget = client.getWidget(WidgetID.KEPT_ON_DEATH_GROUP_ID, KEPT_ON_DEATH_ITEM_RETRIEVAL);
-	if (widget != null)
-	    setDeathBanked(widget.getChildren() != null);
+	if (widget != null && widget.getChildren() != null)
+	{
+	    for (Widget w : widget.getChildren())
+	    {
+		if (w.getType() == WidgetType.TEXT)
+		{
+		    if (w.getText().contains("die again") && w.getText().contains("before collecting") &&
+			w.getText().contains("deleted"))
+		    {
+			deathBankStatusKnown = true;
+			setDeathBanked(true);
+			return;
+		    }
+		}
+	    }
+	}
+	else
+	{
+	    deathBankStatusKnown = true;
+	    setDeathBanked(false);
+	}
     }
 
     private void checkHealth()
