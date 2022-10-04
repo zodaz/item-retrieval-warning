@@ -218,27 +218,31 @@ public class ItemRetrievalWarningPlugin extends Plugin
     {
 	syncKeptItemsInterface = false;
 	Widget widget = client.getWidget(WidgetID.KEPT_ON_DEATH_GROUP_ID, KEPT_ON_DEATH_ITEM_RETRIEVAL);
-	if (widget != null && widget.getChildren() != null)
+	if (widget != null)
 	{
-	    for (Widget w : widget.getChildren())
+	    if(widget.getChildren() != null)
 	    {
-		if (w.getType() == WidgetType.TEXT)
+		for (Widget w : widget.getChildren())
 		{
-		    if (w.getText().contains("die again") && w.getText().contains("before collecting") &&
-			w.getText().contains("deleted"))
+		    if (w.getType() == WidgetType.TEXT)
 		    {
-			deathBankStatusKnown = true;
-			setDeathBanked(true);
-			return;
+			if (w.getText().contains("die again") && w.getText().contains("before collecting") &&
+			    w.getText().contains("deleted"))
+			{
+			    deathBankStatusKnown = true;
+			    setDeathBanked(true);
+			    return;
+			}
 		    }
 		}
 	    }
+	    else
+	    {
+		deathBankStatusKnown = true;
+		setDeathBanked(false);
+	    }
 	}
-	else
-	{
-	    deathBankStatusKnown = true;
-	    setDeathBanked(false);
-	}
+
     }
 
     private void checkHealth()
